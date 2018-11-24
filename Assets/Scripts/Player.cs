@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rotate : MonoBehaviour {
+public class Player : MonoBehaviour {
     public float degreesPerSecond;
     public Transform player;
     public Transform planet;
