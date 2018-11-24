@@ -21,6 +21,6 @@ public class EnemySpawner : MonoBehaviour {
         float rad = Mathf.Deg2Rad * angle;
         Vector3 spawnPos = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * spawnHeight;
 
-        Instantiate(obj, spawnPos, Quaternion.Euler(0, 0, angle));
+        Instantiate(obj, spawnPos, Quaternion.Euler(0, 0, angle + 90f));
     }
 }
