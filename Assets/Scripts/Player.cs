@@ -3,42 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    public float degreesPerSecond;
-    public Transform player;
-    public Transform planet;
+    public static Player instance;
+
+    public bool isMobile;
+
+    public float movementSpeed; //how fast the player goes around the planet
+    float rotationSpeed; //how fast the player goes around in degrees per second
+    float rollSpeed; //how fast the player is rolling
+
+    float playerRadius;
+    Color playerColor;
+    Collider2D playerCollider;
+
     public GameObject line;
+    public Transform shotSpawn;
 
     public GameObject bullet;
 
-    float playerRotateRate;
-    Color playerColor;
-    Collider2D playerCol;
+    Camera gameCam;
+    Planet planet;
+
+    void Awake() {
+        instance = this;
+
+        playerRadius = transform.localScale.x / 2;
+        playerColor = GetComponent<SpriteRenderer>().color;
+        playerCollider = GetComponent<Collider2D>();
+    }
 
     void Start() {
-        playerRotateRate = degreesPerSecond * planet.transform.localScale.x / player.transform.localScale.x;
-        player.transform.position = Vector3.up * ((planet.transform.localScale.x / 2) + (player.transform.localScale.y / 2));
-        playerColor = player.GetComponent<SpriteRenderer>().color;
-        playerCol = player.GetComponent<Collider2D>();
         line.SetActive(false);
     }
 
-    void FixedUpdate() {
-        float input = -Input.acceleration.x;
-        transform.Rotate(new Vector3(0, 0, input * degreesPerSecond * Time.deltaTime));
+    public void UpdateRadius() {
+        transform.localPosition = Vector3.up * (Planet.radius + playerRadius);
+        rotationSpeed = (movementSpeed / Planet.radius) * Mathf.Rad2Deg;
+        rollSpeed = rotationSpeed * Planet.radius / playerRadius;
+    }
 
-        player.Rotate(new Vector3(0, 0, input * playerRotateRate * Time.deltaTime));
+    void FixedUpdate() {
+        float input = -movementInput;
+        transform.parent.Rotate(new Vector3(0, 0, input * rotationSpeed * Time.deltaTime));
+
+        transform.Rotate(new Vector3(0, 0, input * rollSpeed * Time.deltaTime));
     }
 
     void Update() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (shootDown) {
             line.SetActive(true);
         }
 
-        if (Input.GetMouseButtonUp(0)) {
+        if (shootUp) {
             line.SetActive(false);
-            GameObject newBullet = Instantiate(bullet, player.transform.position + (player.up), player.rotation);
-            newBullet.GetComponent<Bullet>().Setup(10, playerColor, playerCol);
+            GameObject newBullet = Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
+            newBullet.GetComponent<Bullet>().Setup(10, playerColor, playerCollider);
             Destroy(newBullet, 2f);
         }
     }
+
+    float movementInput { get { return (!isMobile) ? Input.GetAxis("Horizontal") : Input.acceleration.x; } }
+    bool shootDown { get { return (!isMobile) ? Input.GetKeyDown(KeyCode.Space) : Input.GetMouseButtonDown(0); } }
+    bool shootUp { get { return (!isMobile) ? Input.GetKeyUp(KeyCode.Space) : Input.GetMouseButtonUp(0); } }
 }
