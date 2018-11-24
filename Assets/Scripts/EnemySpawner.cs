@@ -3,16 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour {
-    public float spawnRate;
-    public float spawnHeight;
-    public GameObject enemy;
+    public static EnemySpawner instance;
 
-    float nextSpawn;
+    GameManager.Wave curWave;
+    bool spawning = false;
+    float spawnRate;
+    public float spawnHeight;
+    float spawnTimer;
+    int spawnQue = 0;
+
+    public GameObject[] enemies;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    public void SpawnWave (GameManager.Wave wave) {
+        curWave = wave;
+        spawnQue = curWave.count;
+        spawnRate = curWave.length / curWave.count;
+        spawnTimer = spawnRate;
+
+        spawning = true;
+    }
 
     void Update() {
-        if (Time.time > nextSpawn) {
-            nextSpawn = Time.time + spawnRate;
-            Spawn(enemy);
+        if (spawning) {
+            spawnTimer -= Time.deltaTime;
+            if (spawnTimer <= 0f) {
+                int enemyIndex = curWave.enemies[Random.Range(0, curWave.enemies.Length)];
+                GameObject enemy = enemies[enemyIndex];
+                Spawn(enemy);
+
+                spawnQue--;
+                if (spawnQue > 0) {
+                    spawnTimer = spawnRate;
+                } else {
+                    spawning = false;
+                }
+            }
         }
     }
 
