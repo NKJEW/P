@@ -18,7 +18,7 @@ public class Fragment : MonoBehaviour {
 	
 	void Update () {
         timer -= Time.deltaTime;
-        if (lifeTime <= 0f) {
+        if (timer <= 0f) {
             Destroy(gameObject);
         } else {
             float timeRatio = timer / lifeTime;

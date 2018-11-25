@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour {
-    public static EnemySpawner instance;
+public class EnemyManager : MonoBehaviour {
+    public static EnemyManager instance;
 
+    [Header("Spawning")]
     GameManager.Wave curWave;
     bool spawning = false;
     float spawnRate;
@@ -53,4 +54,9 @@ public class EnemySpawner : MonoBehaviour {
 
         Instantiate(obj, spawnPos, Quaternion.Euler(0, 0, angle + 90f));
     }
+
+    // ENEMY INDICATORS
+    //[Header("Indicators")]
+    //public GameObject indicatorPrefab;
+
 }

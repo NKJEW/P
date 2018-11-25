@@ -33,6 +33,8 @@ public class BasicEnemy : MonoBehaviour {
     Collider2D col;
 
 	void Start() {
+        GameManager.instance.EnemyAdded();
+
         // setup references
         enemyColor = GetComponent<SpriteRenderer>().color;
         col = GetComponent<Collider2D>();
@@ -87,6 +89,9 @@ public class BasicEnemy : MonoBehaviour {
 
     public void Die () {
         Shatter();
+
+        GameManager.instance.EnemyRemoved();
+
         Destroy(gameObject);
     }
 
