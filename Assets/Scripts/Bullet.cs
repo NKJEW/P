@@ -39,11 +39,12 @@ public class Bullet : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D other) {
-        if (isPlayer && other.gameObject.GetComponent<BasicEnemy>() != null) {
-            Destroy(other.gameObject);
+        BasicEnemy possibleEnemy = other.gameObject.GetComponent<BasicEnemy>();
+        if (isPlayer && possibleEnemy != null) {
+            possibleEnemy.Die();
         }
 
-
+       
         Destroy(gameObject);
     }
 }

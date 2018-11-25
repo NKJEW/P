@@ -112,6 +112,10 @@ MonoBehaviour:
   bullet: {fileID: 1572037851377212, guid: dfb6613b7a5af4a1db7281e4dc937227, type: 2}
   minFireDelay: 4
   maxFireDelay: 6
+  fragmentPrefab: {fileID: 1889418469162664, guid: b39f70b8b685a46c89781e9e92ac7bcb,
+    type: 2}
+  shatterForce: 0
+  shatterSpin: 0
 --- !u!212 &212802545951802534
 SpriteRenderer:
   m_ObjectHideFlags: 1
