@@ -8,8 +8,8 @@ public class Bullet : MonoBehaviour {
     public bool isPlayer;
 
     Color color;
-    float fireRate;
-    float nextFire;
+    float emitRate;
+    float nextParticleEmit;
 
     const float DIST = 0.3f;
 
@@ -18,14 +18,14 @@ public class Bullet : MonoBehaviour {
         GetComponent<Rigidbody2D>().velocity = transform.up * speed;
         GetComponent<SpriteRenderer>().color = color;
 
-        fireRate = DIST / speed;
+        emitRate = DIST / speed;
 
-        Physics2D.IgnoreCollision(parentCol, GetComponent<Collider2D>());
+        Physics2D.IgnoreCollision(parentCol, GetComponent<Collider2D>()); //TODO: remove
     }
 
     void Update() {
-        if (Time.time > nextFire) {
-            nextFire = Time.time + fireRate;
+        if (Time.time > nextParticleEmit) {
+            nextParticleEmit = Time.time + emitRate;
             CreateParticle();
         }
     }
@@ -38,12 +38,24 @@ public class Bullet : MonoBehaviour {
         particle.AddComponent<Particle>().Setup(0.2f, trailSprite, color);
     }
 
-    void OnCollisionEnter2D(Collision2D other) {
-        if (isPlayer && other.gameObject.GetComponent<BasicEnemy>() != null) {
+    void OnTriggerEnter2D(Collider2D other) {
+        if (isPlayer && other.gameObject.GetComponent<BasicEnemy>() != null) { //TODO: remove
             Destroy(other.gameObject);
         }
 
+        if (isPlayer) {
+            if (other.gameObject.CompareTag("Enemy")) {
+                Destroy(other.gameObject); //TODO: replace with broadcast
+            }
 
-        Destroy(gameObject);
+            if (!other.gameObject.CompareTag("Player")) {
+                Destroy(gameObject);
+            }
+        } else {
+            if (!other.gameObject.CompareTag("Enemy")) {
+                other.gameObject.BroadcastMessage("RegisterHit");
+                Destroy(gameObject);
+            }
+        }
     }
 }

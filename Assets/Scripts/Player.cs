@@ -61,6 +61,10 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void RegisterHit() {
+        
+    }
+
     float movementInput { get { return (!isMobile) ? Input.GetAxis("Horizontal") : Input.acceleration.x; } }
     bool shootDown { get { return (!isMobile) ? Input.GetKeyDown(KeyCode.Space) : Input.GetMouseButtonDown(0); } }
     bool shootUp { get { return (!isMobile) ? Input.GetKeyUp(KeyCode.Space) : Input.GetMouseButtonUp(0); } }
