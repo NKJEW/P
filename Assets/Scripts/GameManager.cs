@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     int waveIndex = 0;
     float nextWaveTime;
     bool stillSpawning = true;
+    int enemiesAlive = 0;
 
     void Awake() {
         instance = this;
@@ -43,7 +44,22 @@ public class GameManager : MonoBehaviour {
 
     void StartWave (int waveIndex) {
         print("Spawning Wave " + waveIndex + " at " + Time.time + " seconds");
-        EnemySpawner.instance.SpawnWave(levels[loadedLevel].waves[waveIndex]);
+        EnemyManager.instance.SpawnWave(levels[loadedLevel].waves[waveIndex]);
+    }
+
+    public void EnemyAdded () {
+        enemiesAlive++;
+    }
+
+    public void EnemyRemoved() {
+        enemiesAlive--;
+        if (!stillSpawning && enemiesAlive <= 0) {
+            LevelComplete();
+        }
+    }
+
+    void LevelComplete () {
+        print("Level Complete");
     }
 
     [System.Serializable]
