@@ -63,8 +63,7 @@ public class BasicEnemy : MonoBehaviour {
     }
 
     void Shoot () {
-        foreach (var spawn in bulletSpawns)
-        {
+        foreach (var spawn in bulletSpawns) {
             GameObject newBullet = Instantiate(bullet, spawn.position, spawn.rotation); //bullets point in
             newBullet.GetComponent<Bullet>().Setup(3f, enemyColor, col);
             Destroy(newBullet, 2f);

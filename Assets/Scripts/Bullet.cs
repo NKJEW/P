@@ -45,7 +45,6 @@ public class Bullet : MonoBehaviour {
 
         if (isPlayer) {
             if (other.gameObject.CompareTag("Enemy")) {
-                Destroy(other.gameObject); //TODO: replace with broadcast
                 other.GetComponent<BasicEnemy>().Die();
             }
 
