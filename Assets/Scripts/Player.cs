@@ -17,13 +17,13 @@ public class Player : MonoBehaviour {
     public GameObject line;
     [Header("Shooting")]
     public Transform shotSpawn;
-    public GameObject bullet;
     public float rechargeTime;
     float rechargeTimer = 0;
-    int shots = 0;
+    public ShotData[] shotDatas;
+    int[] shots; //-1 if empty, otherwise the number associated with the shot id
+    int numShots = 0;
     List<SpriteRenderer> shotIndicators = new List<SpriteRenderer>();
     public Color shotEmptyColor;
-    public Color shotFullColor;
 
     Camera gameCam;
     Planet planet;
@@ -38,9 +38,12 @@ public class Player : MonoBehaviour {
     void Start() {
         line.SetActive(false);
         Transform shotsContainer = transform.Find("Shots");
-        for (int i = 0; i < shotsContainer.childCount; i++)
-        {
+        for (int i = 0; i < shotsContainer.childCount; i++) {
             shotIndicators.Add(shotsContainer.GetChild(i).GetComponent<SpriteRenderer>());
+        }
+        shots = new int[shotIndicators.Count];
+        for (int i = 0; i < shotIndicators.Count; i++) {
+            shots[i] = -1; //initialize list
         }
         UpdateShotIndicators();
     }
@@ -59,16 +62,15 @@ public class Player : MonoBehaviour {
     }
 
     void Update() {
-        if (shots < shotIndicators.Count) {
+        if (numShots < shots.Length) {
             rechargeTimer += Time.deltaTime;
             if (rechargeTimer >= rechargeTime) {
-                shots++;
+                AddShot(0);
                 rechargeTimer = 0f;
-                UpdateShotIndicators();
             }
         }
 
-        if (shots > 0) {
+        if (numShots > 0) {
             if (shootDown) {
                 line.SetActive(true);
             }
@@ -79,25 +81,61 @@ public class Player : MonoBehaviour {
         }
     }
 
+    void AddShot(int shotType) {
+        int idToReplaceAt = -1;
+        for (int i = 0; i < shots.Length; i++) { //iterate through the shots we have
+            if (shots[i] == -1) { //replace if the slot is empty
+                shots[i] = shotType;
+                numShots++;
+                UpdateShotIndicators();
+                return;
+            }
+            if (GetDataForSlotIndex(i).priority < shotDatas[shotType].priority) {
+                idToReplaceAt = i;
+            }
+        }
+
+        //if we made it through the list and we found a possible slot to replace
+        if (idToReplaceAt != -1) {
+            shots[idToReplaceAt] = shotType;
+            UpdateShotIndicators();
+        }
+    }
+
     void UpdateShotIndicators () {
         for (int i = 0; i < shotIndicators.Count; i++) {
-            bool hasShot = (i < shots);
-            Color color = (hasShot) ? shotFullColor : shotEmptyColor;
+            bool hasShot = shots[i] != -1;
+            Color color = (hasShot) ? GetDataForSlotIndex(i).ammoColor : shotEmptyColor;
             shotIndicators[i].color = color;
         }
     }
 
+    ShotData GetDataForSlotIndex(int id) {
+        return shotDatas[shots[id]];
+    }
+
     void Shoot () {
-        GameObject newBullet = Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
+        numShots--;
+        int curHighestPriority = -1;
+        int slotIdToRemove = -1;
+        for (int i = 0; i < shots.Length; i++) {
+            if (shots[i] != -1 && GetDataForSlotIndex(i).priority > curHighestPriority) {
+                slotIdToRemove = i;
+                curHighestPriority = GetDataForSlotIndex(i).priority;
+            }
+        }
+
+        GameObject newBullet = Instantiate(GetDataForSlotIndex(slotIdToRemove).bulletPrefab, shotSpawn.position, shotSpawn.rotation);
         newBullet.GetComponent<Bullet>().Setup(10, playerCollider);
         Destroy(newBullet, 2f);
 
-        shots--;
+        shots[slotIdToRemove] = -1;
+
         UpdateShotIndicators();
     }
 
     public void RegisterHit() {
-        
+        AddShot(1);
     }
 
     public void RegisterGameOver() {
@@ -108,4 +146,11 @@ public class Player : MonoBehaviour {
     float movementInput { get { return (!isMobile) ? Input.GetAxis("Horizontal") : Input.acceleration.x; } }
     bool shootDown { get { return (!isMobile) ? Input.GetKeyDown(KeyCode.Space) : Input.GetMouseButtonDown(0); } }
     bool shootUp { get { return (!isMobile) ? Input.GetKeyUp(KeyCode.Space) : Input.GetMouseButtonUp(0); } }
+
+    [System.Serializable]
+    public struct ShotData {
+        public Color ammoColor;
+        public GameObject bulletPrefab;
+        public int priority;
+    }
 }
