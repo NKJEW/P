@@ -55,6 +55,7 @@ public class EnemyManager : MonoBehaviour {
 
         GameObject newEnemy = Instantiate(obj, spawnPos, Quaternion.Euler(0, 0, angle + 90f));
         activeEnemies.Add(newEnemy.GetComponent<BasicEnemy>());
+        UIManager.instance.CreateIndicator(newEnemy);
     }
 
     public void EnemyDied (BasicEnemy enemy) {

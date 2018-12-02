@@ -6,6 +6,7 @@ public class Indicator : MonoBehaviour {
     GameObject target;
 
     const float margin = 15f;   // margin from edge of screen
+    const float renderMargin = -0.1f;
     float edgeOffset;
     float BEdge;
     float TEdge;
@@ -23,12 +24,12 @@ public class Indicator : MonoBehaviour {
 
     Camera gameCam;
     RectTransform canvas;
-    GameObject image;
+    Image image;
 
     public void Init(Canvas parentCanvas) {
         gameCam = Camera.main;
         canvas = parentCanvas.GetComponent<RectTransform>();
-        image = transform.GetComponentInChildren<Image>().gameObject;
+        image = transform.GetComponentInChildren<Image>();
     }
 
     public void SetTarget(GameObject _newTarget) {
@@ -53,6 +54,8 @@ public class Indicator : MonoBehaviour {
         BRAngle = (Mathf.PI + Mathf.Atan(REdge / BEdge)) * Mathf.Rad2Deg;
         BLAngle = (Mathf.PI + Mathf.Atan(LEdge / BEdge)) * Mathf.Rad2Deg;
         TLAngle = ((2 * Mathf.PI) + Mathf.Atan(LEdge / TEdge)) * Mathf.Rad2Deg;
+
+        image.enabled = false;
     }
 
     void Update() {
@@ -66,8 +69,8 @@ public class Indicator : MonoBehaviour {
     }
 
     void SetPositionAndRotation() {
-        Vector2 diff = target.transform.position - gameCam.transform.position;
-        float angle = Mathf.Atan2(diff.y, diff.x) + gameCam.transform.rotation.eulerAngles.z;
+        image.enabled = true;
+        float angle = (CalculateAngle() + 360) % 360;
 
         // position
         Vector2 position = Vector2.zero;
@@ -101,9 +104,23 @@ public class Indicator : MonoBehaviour {
 
     }
 
+    float CalculateAngle() { //uses law of cosines to calculate the angle
+        float a = ((Vector2)gameCam.transform.position).magnitude;
+        float b = Vector2.Distance(gameCam.transform.position, target.transform.position);
+        float c = ((Vector2)target.transform.position).magnitude;
+
+        float angle = Mathf.Acos((Mathf.Pow(c, 2) - (Mathf.Pow(a, 2) + Mathf.Pow(b, 2))) / (-2 * a * b)) * Mathf.Rad2Deg + 180;
+        float angleDiff = (Mathf.Atan2(gameCam.transform.position.y, gameCam.transform.position.x) - Mathf.Atan2(target.transform.position.y, target.transform.position.x) + 2 * Mathf.PI) % (2 * Mathf.PI);
+        if (angleDiff < Mathf.PI) {
+            return -angle;
+        } else {
+            return angle;
+        }
+    }
+
     void UpdateVisibility() {
         Vector3 viewportPoint = Camera.main.WorldToViewportPoint(target.transform.position);
-        bool targetIsOnScreen = viewportPoint.x > margin && viewportPoint.x < (1f - margin) && viewportPoint.y > margin && viewportPoint.y < (1f - margin);
-        image.SetActive(!targetIsOnScreen);
+        bool targetIsOnScreen = viewportPoint.x > renderMargin && viewportPoint.x < (1f - renderMargin) && viewportPoint.y > renderMargin && viewportPoint.y < (1f - renderMargin);
+        image.enabled = (!targetIsOnScreen);
     }
 }
