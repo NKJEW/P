@@ -36,9 +36,6 @@ public class BasicEnemy : MonoBehaviour {
     Indicator indicator;
     // vitals
 
-    // visuals
-    Color enemyColor;
-
     // references
     Collider2D col;
 
@@ -46,7 +43,6 @@ public class BasicEnemy : MonoBehaviour {
         GameManager.instance.EnemyAdded();
 
         // setup references
-        enemyColor = GetComponent<SpriteRenderer>().color;
         col = GetComponent<Collider2D>();
 
         // setup bullet spawns
@@ -88,7 +84,7 @@ public class BasicEnemy : MonoBehaviour {
     void Shoot() {
         foreach (var spawn in bulletSpawns) {
             GameObject newBullet = Instantiate(bullet, spawn.position, spawn.rotation); //bullets point in
-            newBullet.GetComponent<Bullet>().Setup(3f, enemyColor, col);
+            newBullet.GetComponent<Bullet>().Setup(3f, col);
             Destroy(newBullet, 2f);
         }
     }

@@ -11,6 +11,22 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1572037851377212}
   m_IsPrefabAsset: 1
+--- !u!1 &1062056441428656
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4635845797083194}
+  - component: {fileID: 212151661958727554}
+  m_Layer: 0
+  m_Name: Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1572037851377212
 GameObject:
   m_ObjectHideFlags: 0
@@ -19,12 +35,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4389734472234246}
-  - component: {fileID: 212657517346083610}
   - component: {fileID: 50473212629463870}
-  - component: {fileID: 114427264290316092}
+  - component: {fileID: 114071926485104730}
   - component: {fileID: 58747528464837506}
+  - component: {fileID: 61337127106146334}
   m_Layer: 8
-  m_Name: PlayerBullet
+  m_Name: FlakBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,8 +55,22 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4635845797083194}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4635845797083194
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1062056441428656}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4389734472234246}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &50473212629463870
@@ -78,7 +108,32 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &114427264290316092
+--- !u!61 &61337127106146334
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1572037851377212}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 10, y: 3}
+  m_EdgeRadius: 0
+--- !u!114 &114071926485104730
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,18 +141,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1572037851377212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96bb218f4e15a45b8b5b7c339ef5ff4c, type: 3}
+  m_Script: {fileID: 11500000, guid: c96fc0fac70e04b5f9192d16488e994a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trailSprite: {fileID: 21300000, guid: fa4afca9160ab4e5da60f700e5726197, type: 3}
+  trailSprite: {fileID: 21300000, guid: e046edf060ba44d4ca6fbd1fd3c46808, type: 3}
   trailStartSize: 0.125
   isPlayer: 1
---- !u!212 &212657517346083610
+  miniBullet: {fileID: 1572037851377212, guid: aec8dc11b8ded446bae3ffaeec36f497, type: 2}
+  numBullets: 8
+  rotateSpeed: 720
+--- !u!212 &212151661958727554
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1572037851377212}
+  m_GameObject: {fileID: 1062056441428656}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -127,8 +185,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: fa4afca9160ab4e5da60f700e5726197, type: 3}
-  m_Color: {r: 0.22745098, g: 0.53333336, b: 0.9019608, a: 1}
+  m_Sprite: {fileID: 21300000, guid: e046edf060ba44d4ca6fbd1fd3c46808, type: 3}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -13,14 +13,15 @@ public class Bullet : MonoBehaviour {
 
     const float DIST = 0.3f;
 
-    public void Setup(float speed, Color newColor, Collider2D parentCol) {
-        color = newColor;
+    public virtual void Setup(float speed, Collider2D parentCol) {
         GetComponent<Rigidbody2D>().velocity = transform.up * speed;
-        GetComponent<SpriteRenderer>().color = color;
+        color = GetComponentInChildren<SpriteRenderer>().color;
 
         emitRate = DIST / speed;
 
-        Physics2D.IgnoreCollision(parentCol, GetComponent<Collider2D>());
+        if (parentCol != null) {
+            Physics2D.IgnoreCollision(parentCol, GetComponent<Collider2D>());
+        }
     }
 
     void Update() {

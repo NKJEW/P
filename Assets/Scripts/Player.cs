@@ -12,7 +12,6 @@ public class Player : MonoBehaviour {
     float rollSpeed; //how fast the player is rolling
 
     float playerRadius;
-    Color playerColor;
     Collider2D playerCollider;
 
     public GameObject line;
@@ -33,7 +32,6 @@ public class Player : MonoBehaviour {
         instance = this;
 
         playerRadius = transform.localScale.x / 2;
-        playerColor = GetComponent<SpriteRenderer>().color;
         playerCollider = GetComponent<Collider2D>();
     }
 
@@ -91,7 +89,7 @@ public class Player : MonoBehaviour {
 
     void Shoot () {
         GameObject newBullet = Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
-        newBullet.GetComponent<Bullet>().Setup(10, playerColor, playerCollider);
+        newBullet.GetComponent<Bullet>().Setup(10, playerCollider);
         Destroy(newBullet, 2f);
 
         shots--;
