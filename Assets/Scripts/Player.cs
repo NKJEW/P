@@ -149,8 +149,10 @@ public class Player : MonoBehaviour {
 
     [System.Serializable]
     public struct ShotData {
-        public Color ammoColor;
+        public Material ammoMat;
         public GameObject bulletPrefab;
         public int priority;
+
+        public Color ammoColor { get { return ammoMat.color; } }
     }
 }
