@@ -1027,6 +1027,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114635067978561596, guid: 399201786a27e409995b4955a5f6ecae,
+        type: 2}
+      propertyPath: levels.Array.data[0].waves.Array.data[1].count
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 399201786a27e409995b4955a5f6ecae, type: 2}
   m_IsPrefabAsset: 0

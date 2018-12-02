@@ -26,16 +26,32 @@ public class Indicator : MonoBehaviour {
     RectTransform canvas;
     Image image;
 
+    public float flashTime;
+    public Color flashColor;
+    Color defaultColor;
+    bool isFlashing; //should we be flashing?
+    bool curIsFlashed; //is the image color flashColor or defaultColor?
+    float nextFlashTime;
+
     public void Init(Canvas parentCanvas) {
         gameCam = Camera.main;
         canvas = parentCanvas.GetComponent<RectTransform>();
         image = transform.GetComponentInChildren<Image>();
+
+        defaultColor = image.color;
     }
 
     public void SetTarget(GameObject _newTarget) {
         target = _newTarget;
 
         enabled = true;
+    }
+
+    public void UpdateFlashState(bool shouldFlash) {
+        isFlashing = shouldFlash;
+        if (!isFlashing) {
+            image.color = defaultColor;
+        }
     }
 
     void Start() {
@@ -66,6 +82,14 @@ public class Indicator : MonoBehaviour {
 
         SetPositionAndRotation();
         UpdateVisibility();
+
+        if (isFlashing) {
+            if (Time.time > nextFlashTime) {
+                nextFlashTime = Time.time + flashTime;
+                curIsFlashed = !curIsFlashed;
+                image.color = (curIsFlashed) ? flashColor : defaultColor;
+            }
+        }
     }
 
     void SetPositionAndRotation() {

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicEnemy : MonoBehaviour {
-    protected enum State
-    {
+    protected enum State {
         idle,
         moving,
         shooting,
@@ -34,6 +33,7 @@ public class BasicEnemy : MonoBehaviour {
     float fireDelay;
 
 
+    Indicator indicator;
     // vitals
 
     // visuals
@@ -42,7 +42,7 @@ public class BasicEnemy : MonoBehaviour {
     // references
     Collider2D col;
 
-	void Start() {
+    void Start() {
         GameManager.instance.EnemyAdded();
 
         // setup references
@@ -50,41 +50,42 @@ public class BasicEnemy : MonoBehaviour {
         col = GetComponent<Collider2D>();
 
         // setup bullet spawns
-        for (int i = 0; i < transform.childCount; i++)
-        {
+        for (int i = 0; i < transform.childCount; i++) {
             Transform child = transform.GetChild(i);
-            if (child.name == "BulletSpawn")
-            {
+            if (child.name == "BulletSpawn") {
                 bulletSpawns.Add(child);
             }
         }
 
         MoveInward(Planet.radius + stoppingDistance); // need to factor in planet radius
-	}
 
-    void MoveInward (float _targetHeight) {
+        indicator = UIManager.instance.CreateIndicator(gameObject);
+    }
+
+    void MoveInward(float _targetHeight) {
         targetHeight = _targetHeight;
         state = State.moving;
     }
 
-    void StartHover () {
+    void StartHover() {
         hoverTimerX = 0f;
-        hoverTimerY = 0f;        
+        hoverTimerY = 0f;
         anchorPos = transform.position;
         hovering = true;
     }
 
-    void EndHover () {
+    void EndHover() {
         hovering = false;
         //transform.position = anchorPos;
     }
 
-    void StartShooting () {
+    void StartShooting() {
         fireDelay = maxFireDelay;
         state = State.shooting;
+        indicator.UpdateFlashState(true);
     }
 
-    void Shoot () {
+    void Shoot() {
         foreach (var spawn in bulletSpawns) {
             GameObject newBullet = Instantiate(bullet, spawn.position, spawn.rotation); //bullets point in
             newBullet.GetComponent<Bullet>().Setup(3f, enemyColor, col);
@@ -113,18 +114,18 @@ public class BasicEnemy : MonoBehaviour {
             hoverTimerY += Time.deltaTime / 2f;
             float xOffset = Mathf.Sin(hoverTimerX * Mathf.PI * hoverSpeed) * hoverDst;
             float yOffset = Mathf.Sin(hoverTimerY * Mathf.PI * hoverSpeed) * hoverDst;
-            transform.position = anchorPos + (transform.right * xOffset) + (transform.up * yOffset); 
+            transform.position = anchorPos + (transform.right * xOffset) + (transform.up * yOffset);
         }
     }
 
-    public void PlanetRadiusUpdated (float newRadius) {
+    public void PlanetRadiusUpdated(float newRadius) {
         if (newRadius + maxDistance < transform.position.magnitude) {
             EndHover();
             MoveInward(newRadius + stoppingDistance);
         }
     }
 
-    public void Die () {
+    public void Die() {
         Shatter();
 
         EnemyManager.instance.EnemyDied(this);
@@ -138,26 +139,22 @@ public class BasicEnemy : MonoBehaviour {
     public float shatterForce;
     public float shatterSpin;
 
-    public void Shatter()
-    {
+    public void Shatter() {
         //ShatterQuad(transform, GetComponent<PolygonCollider2D>().GetPath(0));
         Vector2[] edgePath = new Vector2[4] { new Vector2(0.5f, 0.5f), new Vector2(0.5f, -0.5f), new Vector2(-0.5f, -0.5f), new Vector2(-0.5f, 0.5f) };
         ShatterQuad(transform, edgePath);
     }
 
-    public void ShatterQuad(Transform transform, Vector2[] edgePath)
-    {
+    public void ShatterQuad(Transform transform, Vector2[] edgePath) {
         Vector3[] meshVerts = new Vector3[edgePath.Length];
         Vector3 middlePoint = new Vector3(0f, 0f, meshVerts[0].z);
 
         // adapt 2d edge path to 3d verticies
-        for (int i = 0; i < edgePath.Length; i++)
-        {
+        for (int i = 0; i < edgePath.Length; i++) {
             meshVerts[i] = new Vector3(edgePath[i].x, edgePath[i].y, transform.position.z);
         }
 
-        for (int i = 0; i < meshVerts.Length; i++)
-        {
+        for (int i = 0; i < meshVerts.Length; i++) {
             // define new verticies of triangular mesh
             List<Vector3> shatteredMeshVerts = new List<Vector3>();
             shatteredMeshVerts.Add(middlePoint);
