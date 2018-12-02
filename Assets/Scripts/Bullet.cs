@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour {
 
     public virtual void Setup(float speed, Collider2D parentCol) {
         GetComponent<Rigidbody2D>().velocity = transform.up * speed;
-        color = GetComponentInChildren<SpriteRenderer>().color;
+        color = GetComponentInChildren<SpriteRenderer>().material.color;
 
         emitRate = DIST / speed;
 

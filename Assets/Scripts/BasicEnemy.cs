@@ -23,7 +23,6 @@ public class BasicEnemy : MonoBehaviour {
     // vitals
 
     // visuals
-    Color enemyColor;
     Animator anim;
     bool animates = false;
 
@@ -34,7 +33,6 @@ public class BasicEnemy : MonoBehaviour {
         GameManager.instance.EnemyAdded();
 
         // setup references
-        enemyColor = GetComponentInChildren<SpriteRenderer>().color;
         col = GetComponent<Collider2D>();
 
         Animator possibleAnim = GetComponent<Animator>();
@@ -67,7 +65,7 @@ public class BasicEnemy : MonoBehaviour {
     void Shoot() {
         foreach (var spawn in bulletSpawns) {
             GameObject newBullet = Instantiate(bullet, spawn.position, spawn.rotation); //bullets point in
-            newBullet.GetComponent<Bullet>().Setup(3f, enemyColor, col);
+            newBullet.GetComponent<Bullet>().Setup(3f, col);
             Destroy(newBullet, 2f);
         }
         if (animates) {
