@@ -24,6 +24,7 @@ public class Player : MonoBehaviour {
     int shots = 0;
     List<SpriteRenderer> shotIndicators = new List<SpriteRenderer>();
     public Color shotEmptyColor;
+    public Color shotFullColor;
 
     Camera gameCam;
     Planet planet;
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour {
         {
             shotIndicators.Add(shotsContainer.GetChild(i).GetComponent<SpriteRenderer>());
         }
+        UpdateShotIndicators();
     }
 
     public void UpdateRadius() {
@@ -82,7 +84,7 @@ public class Player : MonoBehaviour {
     void UpdateShotIndicators () {
         for (int i = 0; i < shotIndicators.Count; i++) {
             bool hasShot = (i < shots);
-            Color color = (hasShot) ? Color.white : shotEmptyColor;
+            Color color = (hasShot) ? shotFullColor : shotEmptyColor;
             shotIndicators[i].color = color;
         }
     }
