@@ -57,7 +57,7 @@ public class EnemyManager : MonoBehaviour {
         Vector3 spawnPos = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * spawnHeight;
 
         GameObject newEnemy = Instantiate(obj, spawnPos, Quaternion.Euler(0, 0, angle + 90f));
-        UIManager.instance.CreateIndicator(newEnemy);
+       // UIManager.instance.CreateIndicator(newEnemy);
     }
 
     // ENEMY INDICATORS
