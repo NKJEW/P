@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="32px" viewBox="0 0 25 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>turretCannon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="view-copy" transform="translate(-272.000000, -430.000000)" fill="#FFFFFF">
+            <path d="M272,437.99504 C272,433.579501 275.58189,430 279.996098,430 L289.003902,430 C293.420025,430 297,433.588469 297,437.99504 L297,461.282227 L272,461.282227 L272,437.99504 Z" id="turretCannon"></path>
+        </g>
+    </g>
+</svg>

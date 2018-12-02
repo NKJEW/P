@@ -3,14 +3,13 @@
 Shader "Custom/RadialGradient" {
      Properties {
          _ColorA ("Color A", Color) = (1, 1, 1, 1)
-         _ColorB ("Color B", Color) = (0, 0, 0, 0)
          _Slide ("Slide", Range(0, 1)) = 0.5
      }
  
      SubShader {
          Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" "PreviewType" = "Plane"}
          LOD 100
-  
+         ZWrite Off
          Pass {
              Blend SrcAlpha OneMinusSrcAlpha
              CGPROGRAM
@@ -37,13 +36,31 @@ Shader "Custom/RadialGradient" {
                  return o;
              }
  
-             fixed4 _ColorA, _ColorB;
+             fixed4 _ColorA;
              float _Slide;
  
              fixed4 frag (v2f i) : SV_Target
              {
-                 float t = length(i.texcoord - float2(0.5, 0.5)) * 1.41421356237; // 1.141... = sqrt(2)
-                 return lerp(_ColorA, _ColorB, t + (_Slide - 0.5) * 2);
+                 float t = length(i.texcoord - float2(0.5, 0.5)) * 2;
+                 if (t > 1) {t = 1;}
+                 t = 1 - t;
+
+                 float a;
+                 if (t > _Slide) 
+                 {
+                    a = 1;
+                 } else 
+                 {
+                    a = t / _Slide;
+                    a = a * a;
+                 }
+                 float l = a + (_Slide - 0.5) * 2;
+                 if (l > 1)
+                 {
+                    l = 1;
+                 }
+                 _ColorA.a = a;
+                 return _ColorA;
              }
              ENDCG
          }
