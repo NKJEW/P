@@ -92,6 +92,12 @@ public class BasicEnemy : MonoBehaviour {
     }
 
     public void Die() {
+        if (state == State.dead) {
+            return;
+        }
+
+        state = State.dead;
+
         Shatter();
 
         EnemyManager.instance.EnemyDied(this);
