@@ -29,6 +29,7 @@ public class FlakBullet : Bullet {
         for (int i = 0; i < numBullets; i++) {
             GameObject newBullet = Instantiate(miniBullet, transform.position, Quaternion.Euler(0, 0, angle));
             newBullet.GetComponent<Bullet>().Setup(5f, null);
+            Destroy(newBullet, 0.75f);
             angle += 360f / numBullets;
         }
         Destroy(gameObject);
