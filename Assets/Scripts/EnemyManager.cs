@@ -14,14 +14,11 @@ public class EnemyManager : MonoBehaviour {
     int spawnQue = 0;
 
     public GameObject[] enemies;
+    List<BasicEnemy> activeEnemies = new List<BasicEnemy>();
 
     private void Awake()
     {
         instance = this;
-    }
-
-    void Start() {
-        Spawn(enemies[0]);
     }
 
     public void SpawnWave (GameManager.Wave wave) {
@@ -34,7 +31,7 @@ public class EnemyManager : MonoBehaviour {
     }
 
     void Update() {
-        /*if (spawning) {
+        if (spawning) {
             spawnTimer -= Time.deltaTime;
             if (spawnTimer <= 0f) {
                 int enemyIndex = curWave.enemies[Random.Range(0, curWave.enemies.Length)];
@@ -48,16 +45,27 @@ public class EnemyManager : MonoBehaviour {
                     spawning = false;
                 }
             }
-        }*/
+        }
     }
 
     void Spawn(GameObject obj) {
-        float angle = 90;//Random.Range(0f, 360f);
+        float angle = Random.Range(0f, 360f);
         float rad = Mathf.Deg2Rad * angle;
         Vector3 spawnPos = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * spawnHeight;
 
         GameObject newEnemy = Instantiate(obj, spawnPos, Quaternion.Euler(0, 0, angle + 90f));
-       // UIManager.instance.CreateIndicator(newEnemy);
+        activeEnemies.Add(newEnemy.GetComponent<BasicEnemy>());
+    }
+
+    public void EnemyDied (BasicEnemy enemy) {
+        activeEnemies.Remove(enemy);
+    }
+
+    public void PlanetRadiusUpdated (float newRadius) {
+        foreach (var enemy in activeEnemies)
+        {
+            enemy.PlanetRadiusUpdated(newRadius);
+        }
     }
 
     // ENEMY INDICATORS

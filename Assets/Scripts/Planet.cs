@@ -75,6 +75,7 @@ public class Planet : MonoBehaviour {
             p += Time.deltaTime / shrinkTime;
         }
 
+        EnemyManager.instance.PlanetRadiusUpdated(endRadius);
         radius = endRadius;
         UpdatePlanet();
         curShrinkSequence = null;

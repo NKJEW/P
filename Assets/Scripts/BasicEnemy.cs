@@ -15,13 +15,13 @@ public class BasicEnemy : MonoBehaviour {
     // moving
     [Header("Moving")]
     public float stoppingDistance;
+    public float maxDistance;
     float targetHeight;
     public float speed;
     public float hoverDst;
     public float hoverSpeed;
     float hoverTimerX = 0f;
     float hoverTimerY = 0f;
-    float hoverCycleOffset;
     Vector3 anchorPos;
     bool hovering = false;
 
@@ -32,6 +32,7 @@ public class BasicEnemy : MonoBehaviour {
     public float minFireDelay;
     public float maxFireDelay;
     float fireDelay;
+
 
     // vitals
 
@@ -58,7 +59,7 @@ public class BasicEnemy : MonoBehaviour {
             }
         }
 
-        MoveInward(stoppingDistance); // need to factor in planet radius
+        MoveInward(Planet.radius + stoppingDistance); // need to factor in planet radius
 	}
 
     void MoveInward (float _targetHeight) {
@@ -67,14 +68,15 @@ public class BasicEnemy : MonoBehaviour {
     }
 
     void StartHover () {
-        hoverCycleOffset = Random.Range(speed * 0.25f, speed * 0.75f);
+        hoverTimerX = 0f;
+        hoverTimerY = 0f;        
         anchorPos = transform.position;
         hovering = true;
     }
 
     void EndHover () {
         hovering = false;
-        transform.position = anchorPos;
+        //transform.position = anchorPos;
     }
 
     void StartShooting () {
@@ -115,9 +117,17 @@ public class BasicEnemy : MonoBehaviour {
         }
     }
 
+    public void PlanetRadiusUpdated (float newRadius) {
+        if (newRadius + maxDistance < transform.position.magnitude) {
+            EndHover();
+            MoveInward(newRadius + stoppingDistance);
+        }
+    }
+
     public void Die () {
         Shatter();
 
+        EnemyManager.instance.EnemyDied(this);
         GameManager.instance.EnemyRemoved();
 
         Destroy(gameObject);

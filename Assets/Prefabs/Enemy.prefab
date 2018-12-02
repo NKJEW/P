@@ -17,11 +17,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: hoverSpeed
-      value: 1.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: speed
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: stoppingDistance
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: maxDistance
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
@@ -123,10 +131,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9bddb06681f84f6f81ca3e32a4c7890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stoppingDistance: 9
+  stoppingDistance: 5
+  maxDistance: 6
   speed: 1.5
   hoverDst: 0.15
-  hoverSpeed: 1.5
+  hoverSpeed: 0.7
   bullet: {fileID: 1572037851377212, guid: dfb6613b7a5af4a1db7281e4dc937227, type: 2}
   minFireDelay: 4
   maxFireDelay: 6
