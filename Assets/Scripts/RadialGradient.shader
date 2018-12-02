@@ -54,11 +54,6 @@ Shader "Custom/RadialGradient" {
                     a = t / _Slide;
                     a = a * a;
                  }
-                 float l = a + (_Slide - 0.5) * 2;
-                 if (l > 1)
-                 {
-                    l = 1;
-                 }
                  _ColorA.a = a;
                  return _ColorA;
              }
