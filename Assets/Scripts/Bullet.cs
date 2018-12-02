@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour {
 
         emitRate = DIST / speed;
 
-        Physics2D.IgnoreCollision(parentCol, GetComponent<Collider2D>()); //TODO: remove
+        Physics2D.IgnoreCollision(parentCol, GetComponent<Collider2D>());
     }
 
     void Update() {
@@ -31,29 +31,25 @@ public class Bullet : MonoBehaviour {
     }
 
     void CreateParticle() {
-        GameObject particle = new GameObject();
+        GameObject particle = new GameObject("Particle");
         particle.transform.position = transform.position - transform.up * DIST;
         particle.transform.rotation = transform.rotation;
         particle.transform.localScale = new Vector3(trailStartSize, trailStartSize, 1f);
         particle.AddComponent<Particle>().Setup(0.2f, trailSprite, color);
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
-        if (isPlayer && other.gameObject.GetComponent<BasicEnemy>() != null) { //TODO: remove
-            Destroy(other.gameObject);
-        }
-
+    void OnCollisionEnter2D(Collision2D other) {
         if (isPlayer) {
-            if (other.gameObject.CompareTag("Enemy")) {
-                other.GetComponent<BasicEnemy>().Die();
+            if (other.collider.gameObject.CompareTag("Enemy")) {
+                other.collider.GetComponent<BasicEnemy>().Die();
             }
 
-            if (!other.gameObject.CompareTag("Player")) {
+            if (!other.collider.gameObject.CompareTag("Player")) {
                 Destroy(gameObject);
             }
         } else {
-            if (!other.gameObject.CompareTag("Enemy")) {
-                other.gameObject.BroadcastMessage("RegisterHit");
+            if (!other.collider.gameObject.CompareTag("Enemy")) {
+                other.collider.gameObject.BroadcastMessage("RegisterHit");
                 Destroy(gameObject);
             }
         }
