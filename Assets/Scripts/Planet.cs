@@ -68,6 +68,8 @@ public class Planet : MonoBehaviour {
 
         col.radius = endRadius;
 
+        CameraManager.instance.Move(healthPercent);
+
         while (p < 1f) {
             radius = Mathf.LerpUnclamped(startRadius, endRadius, shrinkCurve.Evaluate(p));
             UpdatePlanet();
