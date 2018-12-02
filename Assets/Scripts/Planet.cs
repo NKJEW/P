@@ -48,6 +48,10 @@ public class Planet : MonoBehaviour {
         }
 
         curHealth--; //temporary behavior
+
+        if (curHealth <= 0) {
+            GameManager.instance.GameOver();
+        }
         UpdateRadius();
     }
 

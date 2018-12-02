@@ -1,12 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
+    enum GameState {
+        InGame = 0,
+        GameOver = 1,
+        Won = 2
+    }
+
     public Level[] levels;
-    public int loadedLevel = 0;
+    public static int loadedLevel = 0;
+
+    GameState state;
 
     // waves
     int waveIndex = 0;
@@ -19,10 +28,12 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start () {
+        state = GameState.InGame;
         StartLevel();
 	}
 
     void StartLevel () {
+        print("Starting level " + loadedLevel);
         nextWaveTime = levels[loadedLevel].waves[0].triggerTime;
     }
 	
@@ -58,8 +69,36 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void GameOver() {
+        if (state != GameState.InGame) {
+            return;
+        }
+
+        state = GameState.GameOver;
+        Player.instance.RegisterGameOver();
+        UIManager.instance.ShowGameOver();
+    }
+
     void LevelComplete () {
+        if (state != GameState.InGame) {
+            return;
+        }
+
         print("Level Complete");
+        state = GameState.Won;
+        UIManager.instance.ShowWin();
+    }
+
+    public void RegisterUITap() {
+        switch (state) {
+            case GameState.GameOver:
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                break;
+            case GameState.Won:
+                loadedLevel++;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                break;
+        }
     }
 
     [System.Serializable]
