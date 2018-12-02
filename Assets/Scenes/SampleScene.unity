@@ -628,6 +628,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainPlanet: {fileID: 1817008370}
   core: {fileID: 1422508445}
+  shrinkCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 4.7307687
+      outSlope: 4.7307687
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.054166667
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  shrinkTime: 0.5
   initialRadius: 4
   coreRadius: 1.5
   maxHealth: 10
@@ -744,6 +769,10 @@ Prefab:
     - target: {fileID: 1982933799271946, guid: 950c3ea1017034a97a026c903e8eaf89, type: 2}
       propertyPath: m_Name
       value: EnemyManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4127612902581878, guid: 950c3ea1017034a97a026c903e8eaf89, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 950c3ea1017034a97a026c903e8eaf89, type: 2}
