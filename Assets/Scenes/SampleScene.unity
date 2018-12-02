@@ -703,10 +703,17 @@ MonoBehaviour:
   movementSpeed: 5
   line: {fileID: 107058590}
   shotSpawn: {fileID: 2139250867}
-  bullet: {fileID: 1572037851377212, guid: 9bd1c5169d6ff428caac3fddd042f9f1, type: 2}
   rechargeTime: 2
+  shotDatas:
+  - ammoColor: {r: 0.22745098, g: 0.53333336, b: 0.9019608, a: 1}
+    bulletPrefab: {fileID: 1572037851377212, guid: 9bd1c5169d6ff428caac3fddd042f9f1,
+      type: 2}
+    priority: 0
+  - ammoColor: {r: 0.92941177, g: 0.14509805, b: 0.24313726, a: 1}
+    bulletPrefab: {fileID: 1572037851377212, guid: f06b420bc7c334806b20ae0a70ca1314,
+      type: 2}
+    priority: 1
   shotEmptyColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
-  shotFullColor: {r: 0.22745098, g: 0.53333336, b: 0.9019608, a: 1}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
