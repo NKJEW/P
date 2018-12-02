@@ -11,19 +11,6 @@ public class BasicEnemy : MonoBehaviour {
     };
     protected State state = State.idle;
 
-    // moving
-    [Header("Moving")]
-    public float stoppingDistance;
-    public float maxDistance;
-    float targetHeight;
-    public float speed;
-    public float hoverDst;
-    public float hoverSpeed;
-    float hoverTimerX = 0f;
-    float hoverTimerY = 0f;
-    Vector3 anchorPos;
-    bool hovering = false;
-
     // shooting
     [Header("Shooting")]
     public GameObject bullet;
@@ -32,9 +19,13 @@ public class BasicEnemy : MonoBehaviour {
     public float maxFireDelay;
     float fireDelay;
 
-
     Indicator indicator;
     // vitals
+
+    // visuals
+    Color enemyColor;
+    Animator anim;
+    bool animates = false;
 
     // references
     Collider2D col;
@@ -43,7 +34,14 @@ public class BasicEnemy : MonoBehaviour {
         GameManager.instance.EnemyAdded();
 
         // setup references
+        enemyColor = GetComponentInChildren<SpriteRenderer>().color;
         col = GetComponent<Collider2D>();
+
+        Animator possibleAnim = GetComponent<Animator>();
+        if (possibleAnim != null) {
+            anim = possibleAnim;
+            animates = true;
+        }
 
         // setup bullet spawns
         for (int i = 0; i < transform.childCount; i++) {
@@ -53,29 +51,14 @@ public class BasicEnemy : MonoBehaviour {
             }
         }
 
-        MoveInward(Planet.radius + stoppingDistance); // need to factor in planet radius
-
         indicator = UIManager.instance.CreateIndicator(gameObject);
+
+        EnemyStart();
     }
 
-    void MoveInward(float _targetHeight) {
-        targetHeight = _targetHeight;
-        state = State.moving;
-    }
+    protected virtual void EnemyStart () {}
 
-    void StartHover() {
-        hoverTimerX = 0f;
-        hoverTimerY = 0f;
-        anchorPos = transform.position;
-        hovering = true;
-    }
-
-    void EndHover() {
-        hovering = false;
-        //transform.position = anchorPos;
-    }
-
-    void StartShooting() {
+    protected void StartShooting() {
         fireDelay = maxFireDelay;
         state = State.shooting;
         indicator.UpdateFlashState(true);
@@ -84,20 +67,16 @@ public class BasicEnemy : MonoBehaviour {
     void Shoot() {
         foreach (var spawn in bulletSpawns) {
             GameObject newBullet = Instantiate(bullet, spawn.position, spawn.rotation); //bullets point in
-            newBullet.GetComponent<Bullet>().Setup(3f, col);
+            newBullet.GetComponent<Bullet>().Setup(3f, enemyColor, col);
             Destroy(newBullet, 2f);
+        }
+        if (animates) {
+            anim.SetTrigger("Shoot");
         }
     }
 
     void Update() {
-        if (state == State.moving) {
-            transform.Translate(Vector3.up * speed * Time.deltaTime, Space.Self);
-            if (transform.position.magnitude <= targetHeight) {
-                // end movement
-                StartShooting();
-                StartHover();
-            }
-        } else if (state == State.shooting) {
+        if (state == State.shooting) {
             fireDelay -= Time.deltaTime;
             if (fireDelay <= 0f) {
                 Shoot();
@@ -105,20 +84,13 @@ public class BasicEnemy : MonoBehaviour {
             }
         }
 
-        if (hovering) {
-            hoverTimerX += Time.deltaTime;
-            hoverTimerY += Time.deltaTime / 2f;
-            float xOffset = Mathf.Sin(hoverTimerX * Mathf.PI * hoverSpeed) * hoverDst;
-            float yOffset = Mathf.Sin(hoverTimerY * Mathf.PI * hoverSpeed) * hoverDst;
-            transform.position = anchorPos + (transform.right * xOffset) + (transform.up * yOffset);
-        }
+        EnemyUpdate();
     }
 
-    public void PlanetRadiusUpdated(float newRadius) {
-        if (newRadius + maxDistance < transform.position.magnitude) {
-            EndHover();
-            MoveInward(newRadius + stoppingDistance);
-        }
+    protected virtual void EnemyUpdate () {}
+
+    public virtual void PlanetRadiusUpdated(float newRadius) {
+        
     }
 
     public void Die() {

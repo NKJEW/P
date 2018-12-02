@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\FlakBullet.cs" />
     <Compile Include="Assets\Scripts\Fragment.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\HoveringEnemy.cs" />
     <Compile Include="Assets\Scripts\Indicator.cs" />
     <Compile Include="Assets\Scripts\Particle.cs" />
     <Compile Include="Assets\Scripts\Planet.cs" />
@@ -75,25 +76,25 @@
     <Compile Include="Assets\Scripts\UIManager.cs" />
     <None Include="Assets\Scripts\RadialGradient.shader" />
     <Reference Include="Unity.VectorGraphics">
-      <HintPath>/Users/nathan/Documents/Unity5/P/Library/ScriptAssemblies/Unity.VectorGraphics.dll</HintPath>
+      <HintPath>/Users/jack/P/Library/ScriptAssemblies/Unity.VectorGraphics.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InternalAPIEditorBridge.003">
-      <HintPath>/Users/nathan/Documents/Unity5/P/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.003.dll</HintPath>
+      <HintPath>/Users/jack/P/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.003.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>/Users/nathan/Documents/Unity5/P/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>/Users/jack/P/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>/Users/nathan/Documents/Unity5/P/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>/Users/jack/P/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>/Users/nathan/Documents/Unity5/P/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>/Users/jack/P/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VectorGraphics.Editor">
-      <HintPath>/Users/nathan/Documents/Unity5/P/Library/ScriptAssemblies/Unity.VectorGraphics.Editor.dll</HintPath>
+      <HintPath>/Users/jack/P/Library/ScriptAssemblies/Unity.VectorGraphics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>/Users/nathan/Documents/Unity5/P/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>/Users/jack/P/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>/Applications/Unity/Hub/Editor/2018.2.18f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -297,10 +298,10 @@
       <HintPath>/Applications/Unity/Hub/Editor/2018.2.18f1/Unity.app/Contents/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Analytics">
-      <HintPath>/Users/nathan/Library/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll</HintPath>
+      <HintPath>/Users/jack/Library/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
-      <HintPath>/Users/nathan/Library/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
+      <HintPath>/Users/jack/Library/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>/Applications/Unity/Hub/Editor/2018.2.18f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/unity/mscorlib.dll</HintPath>

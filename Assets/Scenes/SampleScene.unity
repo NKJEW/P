@@ -936,6 +936,9 @@ MonoBehaviour:
   maxHealth: 10
   terrainPrefabs:
   - {fileID: 1569823832479638, guid: 888402a44604847eeaaa8adc16455b81, type: 2}
+  - {fileID: 1457916142801286, guid: b3d46b20ed03d41d9a81dd62661621d2, type: 2}
+  - {fileID: 1241681212533436, guid: 9b540d4e0a39541aabd8e7a921975552, type: 2}
+  - {fileID: 1440921077454148, guid: 641d73ce8622245868333ec6a9f8f88c, type: 2}
   minSpawnStep: 20
   maxSpawnStep: 70
 --- !u!1001 &599020497
@@ -1052,6 +1055,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114857158340650004, guid: 950c3ea1017034a97a026c903e8eaf89,
+        type: 2}
+      propertyPath: enemies.Array.data[0]
+      value: 
+      objectReference: {fileID: 1539755008764892, guid: 11645de283b9047b1a41780e79f26581,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 950c3ea1017034a97a026c903e8eaf89, type: 2}
   m_IsPrefabAsset: 0
