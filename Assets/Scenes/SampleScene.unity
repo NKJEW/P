@@ -628,6 +628,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainPlanet: {fileID: 1817008370}
   core: {fileID: 1422508445}
+  glowRadius: 0
+  initialGlow: 0.8
   shrinkCurve:
     serializedVersion: 2
     m_Curve:
@@ -658,11 +660,8 @@ MonoBehaviour:
   maxHealth: 10
   terrainPrefabs:
   - {fileID: 1569823832479638, guid: 888402a44604847eeaaa8adc16455b81, type: 2}
-  - {fileID: 1457916142801286, guid: b3d46b20ed03d41d9a81dd62661621d2, type: 2}
-  - {fileID: 1241681212533436, guid: 9b540d4e0a39541aabd8e7a921975552, type: 2}
-  - {fileID: 1440921077454148, guid: 641d73ce8622245868333ec6a9f8f88c, type: 2}
-  minSpawnStep: 30
-  maxSpawnStep: 90
+  minSpawnStep: 20
+  maxSpawnStep: 70
 --- !u!1001 &599020497
 Prefab:
   m_ObjectHideFlags: 0
