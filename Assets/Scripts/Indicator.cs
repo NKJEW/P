@@ -21,75 +21,23 @@ public class Indicator : MonoBehaviour {
     float canvasWidth;
     float canvasHeight;
 
-    bool hasWorldIndicator;
-
     Camera gameCam;
-    Vector3 offset; //offset from center
     RectTransform canvas;
     GameObject image;
-    GameObject worldIndicator;
 
-    static GameObject screenIndicatorPrefab;
-    static bool hasSetPrefabs = false;
-
-    public static Indicator Create(GameObject _newTarget)
-    {
-        Indicator edgeView = Create();
-        edgeView.SetTarget(_newTarget);
-        return edgeView;
-    }
-
-    public static Indicator Create()
-    {
-        if (!hasSetPrefabs)
-        {
-            LoadPrefab();
-        }
-
-        GameObject edgeViewObj = Instantiate(screenIndicatorPrefab, GameManager.instance.transform.parent.GetComponentInChildren<Canvas>().transform); //always use the canvas in LevelAssets
-        Indicator edgeView = edgeViewObj.GetComponent<Indicator>();
-        edgeView.Init();
-
-        return edgeView;
-    }
-
-    static void LoadPrefab()
-    {
-        screenIndicatorPrefab = Resources.Load("Indicator") as GameObject;
-    }
-
-    public void Init()
-    {
+    public void Init(Canvas parentCanvas) {
         gameCam = Camera.main;
-        canvas = GetComponent<RectTransform>();
+        canvas = parentCanvas.GetComponent<RectTransform>();
         image = transform.GetComponentInChildren<Image>().gameObject;
     }
 
-    public void SetTarget(GameObject _newTarget)
-    {
+    public void SetTarget(GameObject _newTarget) {
         target = _newTarget;
-
-        offset = gameCam.transform.forward * Mathf.Sqrt(2) * (gameCam.transform.position.y - target.transform.position.y); //gets point in the center of the camera's view
-
-        //try to get the health component
-        // DESTROY ON DEATH STUFF
 
         enabled = true;
     }
 
-    public void Hide()
-    {
-        image.SetActive(false);
-        enabled = false;
-    }
-
-    public void Destroy()
-    {
-        Destroy(gameObject);
-    }
-
-    void Start()
-    {
+    void Start() {
         edgeOffset = margin + (this.GetComponent<RectTransform>().rect.width / 2);
 
         canvasWidth = canvas.rect.width;
@@ -107,11 +55,9 @@ public class Indicator : MonoBehaviour {
         TLAngle = ((2 * Mathf.PI) + Mathf.Atan(LEdge / TEdge)) * Mathf.Rad2Deg;
     }
 
-    void Update()
-    {
-        if (target == null)
-        {
-            this.Destroy();
+    void Update() {
+        if (target == null) {
+            Destroy(gameObject);
             return;
         }
 
@@ -119,36 +65,28 @@ public class Indicator : MonoBehaviour {
         UpdateVisibility();
     }
 
-    void SetPositionAndRotation()
-    {
-        Vector3 targetVector = (target.transform.position - (gameCam.transform.position + offset));
-        float angle = CalculateAngle(transform.forward, targetVector) - gameCam.transform.rotation.eulerAngles.y; //rotate based on camera's rotation
+    void SetPositionAndRotation() {
+        Vector2 diff = target.transform.position - gameCam.transform.position;
+        float angle = Mathf.Atan2(diff.y, diff.x) + gameCam.transform.rotation.eulerAngles.z;
 
         // position
         Vector2 position = Vector2.zero;
 
         // assign edgeView to 1 of 4 edges (Top, Right, Bottom, Left)
-        if (angle >= TLAngle || angle <= TRAngle)
-        {
+        if (angle >= TLAngle || angle <= TRAngle) {
             // top
             position.y = TEdge;
             position.x = TEdge * Mathf.Tan((angle) * Mathf.Deg2Rad);
 
-        }
-        else if (angle > TRAngle && angle < BRAngle)
-        {
+        } else if (angle > TRAngle && angle < BRAngle) {
             // right
             position.x = REdge;
             position.y = REdge * Mathf.Tan((90 - angle) * Mathf.Deg2Rad);
-        }
-        else if (angle >= BRAngle && angle <= BLAngle)
-        {
+        } else if (angle >= BRAngle && angle <= BLAngle) {
             // bottom
             position.y = BEdge;
             position.x = BEdge * Mathf.Tan((angle) * Mathf.Deg2Rad);
-        }
-        else if (angle > BLAngle && angle < TLAngle)
-        {
+        } else if (angle > BLAngle && angle < TLAngle) {
             // left
             position.x = LEdge;
             position.y = LEdge * Mathf.Tan((270 - angle) * Mathf.Deg2Rad);
@@ -163,16 +101,9 @@ public class Indicator : MonoBehaviour {
 
     }
 
-    void UpdateVisibility()
-    {
+    void UpdateVisibility() {
         Vector3 viewportPoint = Camera.main.WorldToViewportPoint(target.transform.position);
-        bool targetIsOnScreen = viewportPoint.x > margin && viewportPoint.x < (1f - margin) && viewportPoint.y > margin && viewportPoint.y < (1f - margin) && viewportPoint.z > 0;
+        bool targetIsOnScreen = viewportPoint.x > margin && viewportPoint.x < (1f - margin) && viewportPoint.y > margin && viewportPoint.y < (1f - margin);
         image.SetActive(!targetIsOnScreen);
-    }
-
-    //From https://gist.github.com/shiwano/0f236469cd2ce2f4f585
-    public static float CalculateAngle(Vector3 from, Vector3 to)
-    {
-        return Quaternion.FromToRotation(from, to).eulerAngles.y;
     }
 }

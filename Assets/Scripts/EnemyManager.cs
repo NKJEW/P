@@ -20,6 +20,10 @@ public class EnemyManager : MonoBehaviour {
         instance = this;
     }
 
+    void Start() {
+        Spawn(enemies[0]);
+    }
+
     public void SpawnWave (GameManager.Wave wave) {
         curWave = wave;
         spawnQue = curWave.count;
@@ -30,7 +34,7 @@ public class EnemyManager : MonoBehaviour {
     }
 
     void Update() {
-        if (spawning) {
+        /*if (spawning) {
             spawnTimer -= Time.deltaTime;
             if (spawnTimer <= 0f) {
                 int enemyIndex = curWave.enemies[Random.Range(0, curWave.enemies.Length)];
@@ -44,15 +48,16 @@ public class EnemyManager : MonoBehaviour {
                     spawning = false;
                 }
             }
-        }
+        }*/
     }
 
     void Spawn(GameObject obj) {
-        float angle = Random.Range(0f, 360f);
+        float angle = 90;//Random.Range(0f, 360f);
         float rad = Mathf.Deg2Rad * angle;
         Vector3 spawnPos = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * spawnHeight;
 
-        Instantiate(obj, spawnPos, Quaternion.Euler(0, 0, angle + 90f));
+        GameObject newEnemy = Instantiate(obj, spawnPos, Quaternion.Euler(0, 0, angle + 90f));
+        UIManager.instance.CreateIndicator(newEnemy);
     }
 
     // ENEMY INDICATORS

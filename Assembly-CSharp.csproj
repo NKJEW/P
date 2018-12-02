@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Particle.cs" />
     <Compile Include="Assets\Scripts\Planet.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\UIManager.cs" />
     <None Include="Assets\Scripts\RadialGradient.shader" />
     <Reference Include="Unity.VectorGraphics">
       <HintPath>/Users/nathan/Documents/Unity5/P/Library/ScriptAssemblies/Unity.VectorGraphics.dll</HintPath>
