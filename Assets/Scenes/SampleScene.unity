@@ -628,8 +628,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainPlanet: {fileID: 1817008370}
   core: {fileID: 1422508445}
-  glowRadius: 0
-  initialGlow: 0.8
   shrinkCurve:
     serializedVersion: 2
     m_Curve:
@@ -901,12 +899,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 994878840}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 25, y: 25, z: 1}
+  m_LocalScale: {x: 3.5, y: 3.5, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 1817008370}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1134131702
 GameObject:

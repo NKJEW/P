@@ -13,11 +13,20 @@ public class BasicEnemy : MonoBehaviour {
     protected State state = State.idle;
 
     // moving
+    [Header("Moving")]
     public float stoppingDistance;
     float targetHeight;
     public float speed;
+    public float hoverDst;
+    public float hoverSpeed;
+    float hoverTimerX = 0f;
+    float hoverTimerY = 0f;
+    float hoverCycleOffset;
+    Vector3 anchorPos;
+    bool hovering = false;
 
     // shooting
+    [Header("Shooting")]
     public GameObject bullet;
     List<Transform> bulletSpawns = new List<Transform>();
     public float minFireDelay;
@@ -57,6 +66,17 @@ public class BasicEnemy : MonoBehaviour {
         state = State.moving;
     }
 
+    void StartHover () {
+        hoverCycleOffset = Random.Range(speed * 0.25f, speed * 0.75f);
+        anchorPos = transform.position;
+        hovering = true;
+    }
+
+    void EndHover () {
+        hovering = false;
+        transform.position = anchorPos;
+    }
+
     void StartShooting () {
         fireDelay = maxFireDelay;
         state = State.shooting;
@@ -76,6 +96,7 @@ public class BasicEnemy : MonoBehaviour {
             if (transform.position.magnitude <= targetHeight) {
                 // end movement
                 StartShooting();
+                StartHover();
             }
         } else if (state == State.shooting) {
             fireDelay -= Time.deltaTime;
@@ -83,6 +104,14 @@ public class BasicEnemy : MonoBehaviour {
                 Shoot();
                 fireDelay = Random.Range(minFireDelay, maxFireDelay);
             }
+        }
+
+        if (hovering) {
+            hoverTimerX += Time.deltaTime;
+            hoverTimerY += Time.deltaTime / 2f;
+            float xOffset = Mathf.Sin(hoverTimerX * Mathf.PI * hoverSpeed) * hoverDst;
+            float yOffset = Mathf.Sin(hoverTimerY * Mathf.PI * hoverSpeed) * hoverDst;
+            transform.position = anchorPos + (transform.right * xOffset) + (transform.up * yOffset); 
         }
     }
 
