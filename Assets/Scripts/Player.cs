@@ -16,9 +16,14 @@ public class Player : MonoBehaviour {
     Collider2D playerCollider;
 
     public GameObject line;
+    [Header("Shooting")]
     public Transform shotSpawn;
-
     public GameObject bullet;
+    public float rechargeTime;
+    float rechargeTimer = 0;
+    int shots = 0;
+    List<SpriteRenderer> shotIndicators = new List<SpriteRenderer>();
+    public Color shotEmptyColor;
 
     Camera gameCam;
     Planet planet;
@@ -33,6 +38,11 @@ public class Player : MonoBehaviour {
 
     void Start() {
         line.SetActive(false);
+        Transform shotsContainer = transform.Find("Shots");
+        for (int i = 0; i < shotsContainer.childCount; i++)
+        {
+            shotIndicators.Add(shotsContainer.GetChild(i).GetComponent<SpriteRenderer>());
+        }
     }
 
     public void UpdateRadius() {
@@ -49,16 +59,41 @@ public class Player : MonoBehaviour {
     }
 
     void Update() {
-        if (shootDown) {
-            line.SetActive(true);
+        if (shots < shotIndicators.Count) {
+            rechargeTimer += Time.deltaTime;
+            if (rechargeTimer >= rechargeTime) {
+                shots++;
+                rechargeTimer = 0f;
+                UpdateShotIndicators();
+            }
         }
 
-        if (shootUp) {
-            line.SetActive(false);
-            GameObject newBullet = Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
-            newBullet.GetComponent<Bullet>().Setup(10, playerColor, playerCollider);
-            Destroy(newBullet, 2f);
+        if (shots > 0) {
+            if (shootDown) {
+                line.SetActive(true);
+            }
+            if (shootUp) {
+                line.SetActive(false);
+                Shoot();
+            }
         }
+    }
+
+    void UpdateShotIndicators () {
+        for (int i = 0; i < shotIndicators.Count; i++) {
+            bool hasShot = (i < shots);
+            Color color = (hasShot) ? Color.white : shotEmptyColor;
+            shotIndicators[i].color = color;
+        }
+    }
+
+    void Shoot () {
+        GameObject newBullet = Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
+        newBullet.GetComponent<Bullet>().Setup(10, playerColor, playerCollider);
+        Destroy(newBullet, 2f);
+
+        shots--;
+        UpdateShotIndicators();
     }
 
     public void RegisterHit() {

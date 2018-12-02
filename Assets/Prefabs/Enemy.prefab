@@ -21,7 +21,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: speed
-      value: 1.5
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: stoppingDistance
@@ -29,7 +29,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: maxDistance
-      value: 6
+      value: 5.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
@@ -132,8 +132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stoppingDistance: 5
-  maxDistance: 6
-  speed: 1.5
+  maxDistance: 5.5
+  speed: 1.2
   hoverDst: 0.15
   hoverSpeed: 0.7
   bullet: {fileID: 1572037851377212, guid: dfb6613b7a5af4a1db7281e4dc937227, type: 2}
